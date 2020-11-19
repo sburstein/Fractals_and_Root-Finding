@@ -45,19 +45,19 @@ def id_root(zl,rlist):
     
 # define left and right boundaries for plotting    
 # for overview plots:
-#interval_left = -2.1
-#interval_right = 2.1
-#interval_down = -2.1
-#interval_up = 2.1
+interval_left = -2.1
+interval_right = 2.1
+interval_down = -2.1
+interval_up = 2.1
 # for detailed plots (adjust as needed):
-interval_left = -1.15
-interval_right = 2.
-interval_down = -0.25
-interval_up = 0.25
+#interval_left = -1.15
+#interval_right = 2.
+#interval_down = -0.25
+#interval_up = 0.25
 # set number of grid points on x and y axes for plotting 
 # use 100 for testing plotting ranges, 1000 for nice plots and 2000 for nicer plots
-num_x = 2000
-num_y = 2000
+num_x = 1000
+num_y = 1000
 # set desired precision and max number of iterations
 # keep precision goal smaller than findgoal (root matching) above
 prec_goal = 1.e-11
