@@ -58,42 +58,41 @@ def Box_Dim(image_name, start_range = 1, end_range = 10, debug=False, graph=Fals
   y = np.array(box_number)
   
   #modline = np.polyfit(np.log10(x), np.log10(y), 1)
-  slope, intercept, r_value, p_value, std_err = linregress(np.log2(x), np.log2(y))
-  pred_y = slope * x + intercept 
+  slope, intercept, r_value, p_value, std_err = linregress(np.log10(1/x), np.log10(y))
+  #calc_dim = slope * -1.
   
+
   if graph == True:
     # plot the graph (log-log)
+    xfid = np.linspace(-3, 0)
     plt.figure(figsize=(6, 4))
-    plt.loglog(n, box_number, '.-k', markersize=12)
-    plt.loglog(n, pred_y, color = 'green')
+    plt.plot(np.log10(1/x), np.log10(y), '.-k', markersize=12)
+    #pred_y = slope * x + intercept 
+    plt.plot(xfid, xfid*slope+intercept, color = 'green')
     plt.show
     # plot a reference line
     res = input("Plot a reference line? (y/n) ")
     if res == ("y"):
-      guess = input("What is the predicted slope? ")
-      vals = [100*v**(float(guess)) for v in n]
-      plt.loglog(n, vals, '--r')
+      guess = input("What is the predicted slope (dimension)? ")
+      pred_dim = float(guess) * -1.
+      vals = [100*v**(float(pred_dim)) for v in n]
+      plt.plot(np.log10(1/x), np.log10(vals), '--r')
+      # plot decorations, save plot
+      plt.title('Box Count vs. Box Size Plot')
       plt.xlabel('$n$')
       plt.ylabel('Box_count')
       plt.savefig('number_vs_count.pdf', bbox_inches='tight')
       plt.show()
-      return guess
+      return guess, slope
     else:
+      # plot decorations, save plot
       plt.xlabel('$n$')
       plt.ylabel('Box_count')
       plt.savefig('number_vs_count.pdf', bbox_inches='tight')
       plt.show()
 
-      return guess
-    # plot decorations, save plot
-    plt.xlabel('$n$')
-    plt.ylabel('Box_count')
-    plt.savefig('number_vs_count.pdf', bbox_inches='tight')
-    plt.show()
-
-    return guess
-  
-  return
+      return slope
+  return slope
 
 
 def image_convert(image_name):

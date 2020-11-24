@@ -11,23 +11,24 @@ if __name__ == "__main__":
   #print('Finished computation and plotting at '+str(datetime.datetime.now()))
 
   
-  for i in [2,7,9,10]:
-    func_name = "npe"+str(i)   #"npe1"
-    func_roots = rootlist[func_name]
-    plot_newton_fractal(func_name, func_roots, scalar=2, interval_size=2.56, timing=True)
+  #for i in [2,7,9,10]:
+  #  func_name = "npe"+str(i)   #"npe1"
+   # func_roots = rootlist[func_name]
+    #plot_newton_fractal(func_name, func_roots, scalar=2, interval_size=2.56, timing=True)
 
-
+  #func_name = 'npe1'
   #image_name = f"newton-fractal-plot-{func_name}.jpg"
-  #square_test = "square.jpg"
+  square_test = "square3.jpg"
   #x = box_count(square_test, box_size = 2, print_out = True)
 
   #print(x)
 
-  
+  sierpinski_carpet = "Sierpinski_carpet.jpg"
 
   #box_count(jo, c, b, 3, print_out=True)
   
-  #dim = Box_Dim(image_name, graph=True)
-  #print(dim)
+  
+  guess, actual = Box_Dim(sierpinski_carpet, graph=True)
+  print(f"Predicted Dimension: {guess} \n Calculated Dimension: {actual}")
 
 
