@@ -2,6 +2,8 @@ from PIL import Image
 import matplotlib.pyplot as plt
 import numpy as np
 from scipy.stats import linregress
+import datetime
+
 """
 Module containing functions used to calculate the fractal dimension of a given jpeg image.
 """
@@ -54,7 +56,7 @@ def box_count(image_matrix, nrows, ncols, box_size, print_out=False):
   
   return fractalCounter
 
-def Box_Dim(image_name, start_range = 1, end_range = 10, debug=False, graph=False):
+def Box_Dim(image_name, start_range = 1,end_range = 10, debug=False, graph=False, timing=False):
   """
   Calculates the dimension of a fractal using Minkowski–Bouligand dimension or box-counting dimension analysis. 
   Assumes the image is greyscale colour square with length 2**k .
@@ -73,7 +75,8 @@ def Box_Dim(image_name, start_range = 1, end_range = 10, debug=False, graph=Fals
      graphs the Number of Boxes vs. Box Size if toggled
      asks for predicted dimension from user
      returns guess and calculated dimension if toggled
-  
+  timing : boolean, optional
+      toggles timing of the computation and prints the total time for the function.
   Returns
   ----------
   slope : float
@@ -81,20 +84,24 @@ def Box_Dim(image_name, start_range = 1, end_range = 10, debug=False, graph=Fals
   guess : float
       returns if graph=True. The user's guess for the dimension of the fractal.
   """
+
+  if timing == True:
+    start = datetime.datetime.now()
+
   im_mat, nrows, ncols = image_convert(image_name)
 
   n = [2**k for k in range(start_range, end_range)] 
   if debug == True:
     print(f"data points n : {n}")
+  
   # computes a list of box counts given sizes in v
   # n is the range of box_sizes, goes up by powers of 2
   box_number = [box_count(im_mat, nrows, ncols, v) for v in n]
   x = np.array(n)
   y = np.array(box_number)
   
- 
   slope, intercept, r_value, p_value, std_err = linregress(np.log10(1/x), np.log10(y))
-  #calc_dim = slope 
+  
   if debug == True:
     print(f"Linear regression (numpy) variables: {slope}, intercept:{intercept}, r_value:{r_value}, p_value:{p_value}, std_err:{std_err}")
 
@@ -103,23 +110,35 @@ def Box_Dim(image_name, start_range = 1, end_range = 10, debug=False, graph=Fals
     xfid = np.linspace(-3, 0)
     plt.figure(figsize=(6, 4))
     plt.plot(np.log10(1/x), np.log10(y), '.-k', markersize=12)
+    
     #pred_y = slope * x + intercept 
     plt.plot(xfid, xfid*slope+intercept, color = 'green')
     plt.show
+    
     # plot a reference line
     res = input("Plot a reference line? (y/n) ")
+    
     if res == ("y"):
       guess = input("What is the predicted slope (dimension)? ")
       pred_dim = float(guess) * -1.
       vals = [100*v**(float(pred_dim)) for v in n]
       plt.plot(np.log10(1/x), np.log10(vals), '--r')
+      
       # plot decorations, save plot
       plt.title('Box Count vs. Box Size Plot')
       plt.xlabel('$n$')
       plt.ylabel('Box_count')
       plt.savefig('number_vs_count.pdf', bbox_inches='tight')
       plt.show()
+
+      if timing == True:
+        end = datetime.datetime.now()
+        print('Finished computation at '+str(end))
+        elapsed = end - start
+        print("Total elapsed time:" +str(elapsed))
+
       return guess, slope
+    
     else:
       # plot decorations, save plot
       plt.xlabel('$n$')
@@ -127,7 +146,19 @@ def Box_Dim(image_name, start_range = 1, end_range = 10, debug=False, graph=Fals
       plt.savefig('number_vs_count.pdf', bbox_inches='tight')
       plt.show()
 
+      if timing == True:
+        end = datetime.datetime.now()
+        print('Finished computation at '+str(end))
+        elapsed = end - start
+        print("Total elapsed time:" +str(elapsed))
+
       return slope
+  
+  if timing == True:
+      end = datetime.datetime.now()
+      print('Finished computation at '+str(end))
+      elapsed = end - start
+      print("Total elapsed time:" +str(elapsed))
   return slope
 
 
@@ -157,7 +188,7 @@ def image_convert(image_name):
   ncols = image.size[0]
 
   temp = [[[0] for x in range(nrows)] for y in range(ncols)]
-  #temp = np.zeros(nrows, ncols)
+
   px = [[[0] for x in range(nrows)] for y in range(ncols)]
   for x in range(nrows):
     for y in range(ncols):

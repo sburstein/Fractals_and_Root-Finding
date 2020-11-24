@@ -13,7 +13,7 @@ if __name__ == "__main__":
     Image should also be compressed as a .jpg
 
     f(x) = log2(2.56 * 200 * x)
-    2^(f(a)) = size of image
+    2^(f(a)) = n in (n x n) dimension size in pixel count
 
     Usable scalar values for box counting method:
     a=1 -> 512 x 512 pixel image [Poor quality fractal image, not enough pixels]
