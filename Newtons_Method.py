@@ -1,7 +1,7 @@
 from scipy.misc import derivative
 #from sympy import diff
 
-def NewtonsMethod(f, initial, tolerance = 1e-10, max_iterations = 1000, debug = False):
+def NewtonsMethod(f, initial, tolerance = 1e-10, max_iterations = 100, debug = False):
     
     it = 0
     x0 = initial

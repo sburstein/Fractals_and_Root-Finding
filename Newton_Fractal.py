@@ -3,6 +3,10 @@ import numpy as np
 import datetime
 from main import func
 
+''''
+source: https://computingskillset.com/solving-equations/newton-fractals-explained-examples-and-python-code/
+'''
+
 def plot_newton_fractal(func_string, func_roots, interval_size=2.1, timing=False, prec_goal=1.e-11, nmax=500, num_x=1000,
 num_y=1000, colour_name='Greys'):
   if timing == True:
@@ -24,17 +28,15 @@ num_y=1000, colour_name='Greys'):
       for r in rlist:
           # check for closeness to each root in the list
           rootid = np.where(np.abs(zl-r* np.ones(len(zl))) < findgoal, np.ones(len(zl)) * rlist.index(r), rootid)      
-      return rootid
+      return rootid.astype(int)
+      
     # create complex list of points from x and y values
-  zlist = []
-  for x in xvals:
-      for y in yvals:
-        zlist.append(x + 1j*y)
+  zlist = [(x + 1j*y) for y in yvals for x in xvals]
     
   # initialize the arrays for results, differences, loop counters  
   result_list = np.array(zlist)
   reldiff = np.ones(len(result_list))
-  counter = np.zeros(len(result_list)).astype(int)
+  counter = np.zeros(len(result_list), dtype=int)
   # initialize overall counter for controlling the while loop
   overallcounter = 0
   # vectorize the precision goal
@@ -56,7 +58,7 @@ num_y=1000, colour_name='Greys'):
         overallcounter += 1
     
   # get the converged roots matched up with those predefined in the root list
-  nroot = id_root(z1list,rootlist[func_string]).astype(int)
+  nroot = id_root(z1list,rootlist[func_string])
 
     # uncomment those in case of doubt
 #    print(result_list)
@@ -89,5 +91,3 @@ num_y=1000, colour_name='Greys'):
     # timing step
   if timing == True:
       print('Finished computation and plotting at '+str(datetime.datetime.now()))
-
-#source: https://computingskillset.com/solving-equations/newton-fractals-explained-examples-and-python-code/
