@@ -28,9 +28,9 @@ if __name__ == "__main__":
   scalar = 2
   '''
 
-  # func_name = "npe2"
-  # func_roots = rootlist[func_name]
-  # plot_newton_fractal(func_name, func_roots, scalar=2, interval_size=2.56, timing=True)
+  #func_name = "npe2"
+  #func_roots = rootlist[func_name]
+  #plot_newton_fractal(func_name, func_roots, scalar=2, interval_size=2.56, timing=True)
   #final timing check
   #print('Finished computation and plotting at '+str(datetime.datetime.now()))
 
@@ -48,10 +48,7 @@ if __name__ == "__main__":
   '''
 
   #square_test = "square3.jpg"
-  #x = box_count(square_test, box_size = 2, print_out = True)
-  #print(x)
-
-  #guess, actual = Box_Dim(square_test, graph=True)
+  #guess, actual = Box_Dim(square_test, graph=True, timing=True, debug=True)
   #print(f"Predicted Dimension: {guess} \n Calculated Dimension: {actual}")
   
   #-----------------------------------------------------------------------
