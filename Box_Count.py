@@ -1,7 +1,7 @@
 from PIL import Image
 import matplotlib.pyplot as plt
 import numpy as np
-from sklearn.linear_model import LinearRegression
+from scipy.stats import linregress
 
 #image_name = "newton-fractal-plot-func.jpg"
 
@@ -36,7 +36,7 @@ def box_count(image_matrix, nrows, ncols, box_size, print_out=False):
   
   return fractalCounter
 
-def Box_Dim(image_name, debug=False, graph=False):
+def Box_Dim(image_name, start_range = 1, end_range = 10, debug=False, graph=False):
   """
   Arguments:
   image_name = input of image file in str
@@ -50,21 +50,22 @@ def Box_Dim(image_name, debug=False, graph=False):
   # TODO:
   # calculate the maximim box_size for image
   # calculate a good step size for the range
-  n = [2**k for k in range(1, 9)] 
+  n = [2**k for k in range(start_range, end_range)] 
   # computes a list of box counts given sizes in v
   # dummy variable n is the range of box_sizes, goes up by powers of 2
   box_number = [box_count(im_mat, nrows, ncols, v) for v in n]
-  #x = np.array(n)
-  #y = np.array(box_number)
+  x = np.array(n)
+  y = np.array(box_number)
   
-  #modline = np.polyfit(x, y, 1)
-  #pred_y = modline[0] * x + modline[1]
+  #modline = np.polyfit(np.log10(x), np.log10(y), 1)
+  slope, intercept, r_value, p_value, std_err = linregress(np.log2(x), np.log2(y))
+  pred_y = slope * x + intercept 
   
   if graph == True:
     # plot the graph (log-log)
     plt.figure(figsize=(6, 4))
     plt.loglog(n, box_number, '.-k', markersize=12)
-    #plt.loglog(n, pred_y, color = 'green')
+    plt.loglog(n, pred_y, color = 'green')
     plt.show
     # plot a reference line
     res = input("Plot a reference line? (y/n) ")

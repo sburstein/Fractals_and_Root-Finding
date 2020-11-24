@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import datetime
-from main import func
+from functions import *
 
 ''''
 source: https://computingskillset.com/solving-equations/newton-fractals-explained-examples-and-python-code/
@@ -65,7 +65,7 @@ def plot_newton_fractal(func_string, func_roots, interval_size=2.1, timing=False
 #    print(nroot)
     
     # get the data into the proper shape for plotting with matplotlib.pyplot.matshow
-  nroot_contour = np.transpose(np.reshape(nroot,(num_x,num_y)))
+  nroot_contour = np.transpose(np.reshape(nroot,(num_x*scalar, num_y*scalar)))
     
     # timing to see difference in time used between calculation and plotting
   if timing == True:

@@ -1,5 +1,4 @@
-from scipy import optimize
-from optimize import newton as root
+import numpy as np
 
 # initialize a dictionary of list of the roots
 rootlist = {}
@@ -14,7 +13,7 @@ rootlist['npe1'] = [-1, 1, -1j, 1j]
 def npe2(x):
     return (x**3-1)/(3*x**2)
 rootlist['npe2'] = [-.5-0.8660254037844386j,-.5+0.8660254037844386j, 1]
-# example 2: function with twelve roots on the unit circle
+# example 3: function with twelve roots on the unit circle
 def npe3(x):
     return (x**12-1)/(12*x**11)
 rootlist['npe3'] = [-.5-0.8660254037844386j,-.5+0.8660254037844386j,.5-0.8660254037844386j,.5+0.8660254037844386j,-.5j-0.8660254037844386,-.5j+0.8660254037844386,.5j-0.8660254037844386,.5j+0.8660254037844386, 1,-1,1.j,-1.j]
