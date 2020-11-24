@@ -2,15 +2,33 @@ from PIL import Image
 import matplotlib.pyplot as plt
 import numpy as np
 from scipy.stats import linregress
-
-#image_name = "newton-fractal-plot-func.jpg"
+"""
+Module containing functions used to calculate the fractal dimension of a given jpeg image.
+"""
 
 def box_count(image_matrix, nrows, ncols, box_size, print_out=False):
   """
+  Counts the number of boxes in image matrix that contain fractal
+
   Assumes the image is in greyscale, no background, with little to no compression issues.
   Takes a box size input and returns the number of boxes of size n that cover the fractal.
-  Return:
-  Number of Boxes of Size N that contain the fractal
+
+  Parameters
+  ----------
+  image_matrix : np.array
+      numpy array of pixel values, with row-major in [row][column]
+  nrows : int
+      number of rows in the image matrix
+  ncols : int
+      number of columns in the image_matrix
+  box_size : int
+      box length in pixels
+  print_out : boolean, optional
+      True for printout of information regarding boxes counted 
+  
+  Returns
+  -------
+  Number of Boxes of (box_size x box_size) that contain the fractal
   """
 
   pix = image_matrix
@@ -38,29 +56,47 @@ def box_count(image_matrix, nrows, ncols, box_size, print_out=False):
 
 def Box_Dim(image_name, start_range = 1, end_range = 10, debug=False, graph=False):
   """
-  Arguments:
-  image_name = input of image file in str
-  debug = toggles several print statements
-  graph = graphs the Number of Boxes vs. Box Size if toggled
+  Calculates the dimension of a fractal using Minkowski–Bouligand dimension or box-counting dimension analysis. 
+  Assumes the image is greyscale colour square with length 2**k .
+
+  Parameters
+  ----------
+  image_name : str
+      input of image file name in str
+  start_range : int, optional
+      default is 1, start range for 2**k data points
+  end_range : int, optional
+      default is 10, end range for 2**k data points
+  debug : boolean, optional
+     toggles several print statements
+  graph : boolean, optional
+     graphs the Number of Boxes vs. Box Size if toggled
+     asks for predicted dimension from user
+     returns guess and calculated dimension if toggled
   
-  Returns:
-  modline.coef_ = the slope of the linear regression model, which is the dimension of the fractal
+  Returns
+  ----------
+  slope : float
+     the slope of the linear regression model, which is the dimension of the fractal
+  guess : float
+      returns if graph=True. The user's guess for the dimension of the fractal.
   """
   im_mat, nrows, ncols = image_convert(image_name)
-  # TODO:
-  # calculate the maximim box_size for image
-  # calculate a good step size for the range
+
   n = [2**k for k in range(start_range, end_range)] 
+  if debug == True:
+    print(f"data points n : {n}")
   # computes a list of box counts given sizes in v
-  # dummy variable n is the range of box_sizes, goes up by powers of 2
+  # n is the range of box_sizes, goes up by powers of 2
   box_number = [box_count(im_mat, nrows, ncols, v) for v in n]
   x = np.array(n)
   y = np.array(box_number)
   
-  #modline = np.polyfit(np.log10(x), np.log10(y), 1)
+ 
   slope, intercept, r_value, p_value, std_err = linregress(np.log10(1/x), np.log10(y))
-  #calc_dim = slope * -1.
-  
+  #calc_dim = slope 
+  if debug == True:
+    print(f"Linear regression (numpy) variables: {slope}, intercept:{intercept}, r_value:{r_value}, p_value:{p_value}, std_err:{std_err}")
 
   if graph == True:
     # plot the graph (log-log)
@@ -96,6 +132,24 @@ def Box_Dim(image_name, start_range = 1, end_range = 10, debug=False, graph=Fals
 
 
 def image_convert(image_name):
+  """
+  Converts image to usable matrix 
+
+  Parameters
+  ----------
+  image_name : string
+      file name of image. Must be jpg format.
+      
+  Returns
+  -------
+  im_mat : np.array
+      numpy array of pixel values, with row-major in [row][column]
+  nrows : int
+      number of rows in the image matrix
+  ncols : int
+      number of columns in the image_matrix
+  """
+  
   image = Image.open(image_name)
   pix = image.load()
 

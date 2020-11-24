@@ -4,10 +4,42 @@ import datetime
 from functions import *
 
 ''''
-source: https://computingskillset.com/solving-equations/newton-fractals-explained-examples-and-python-code/
+Module that produces a Newton Fractal image in jpg if given the function and a list of roots.
+
+modified code from source: https://computingskillset.com/solving-equations/newton-fractals-explained-examples-and-python-code/
 '''
 
 def plot_newton_fractal(func_string, func_roots, interval_size=2.1, timing=False, prec_goal=1.e-11, nmax=500, num_x=1000, num_y=1000, scalar=1, colour_name='Greys'):
+  """
+  Produces a Newton Fractal image in jpg format if given the function(x) as string and a list of roots.
+
+  Parameters
+  ----------
+  func_string : str
+      input for name of function
+  func_roots : list
+      list of roots associated with function 
+  interval_size : float, optional
+      The length of the output image in inches. Image output is a square. The default is 2.1.
+  timing : boolean, optional
+      Prints the start and end to the computation. The default is False.
+  prec_goal : float, optional
+      The precision goal for the root-finding algorithm. The default is 1.e-11.
+  nmax : int, optional
+      The maximim number of iterations. The default is 500.
+  num_x : int, optional
+      Number of points in x-interval. The default is 1000.
+  num_y : int, optional
+      Number of points in y-interval. The default is 1000.
+  scalar : int, optional
+      Scalar value which multiplies dpi and num_x, num_y. Increasing this value will increase the dpi and thus the detail. The default is 1.
+  colour_name : str, optional
+      The colour map of the fractal image. The default is 'Greys'.
+
+  Returns
+  -------
+  None.
+  """
   if timing == True:
     print('Started computation at '+str(datetime.datetime.now()))
   #check if input is correct
