@@ -7,8 +7,7 @@ from main import func
 source: https://computingskillset.com/solving-equations/newton-fractals-explained-examples-and-python-code/
 '''
 
-def plot_newton_fractal(func_string, func_roots, interval_size=2.1, timing=False, prec_goal=1.e-11, nmax=500, num_x=1000,
-num_y=1000, colour_name='Greys'):
+def plot_newton_fractal(func_string, func_roots, interval_size=2.1, timing=False, prec_goal=1.e-11, nmax=500, num_x=1000, num_y=1000, scalar=1, colour_name='Greys'):
   if timing == True:
     print('Started computation at '+str(datetime.datetime.now()))
   #check if input is correct
@@ -19,8 +18,8 @@ num_y=1000, colour_name='Greys'):
     return ValueError("func_root must be of type(list)")
   # define x and y grids of points for computation and plotting the fractal
   bounds = interval_size
-  xvals = np.linspace(-bounds, bounds, num = num_x)
-  yvals = np.linspace(-bounds, bounds, num = num_y)
+  xvals = np.linspace(-bounds, bounds, num = num_x*scalar)
+  yvals = np.linspace(-bounds, bounds, num = num_y*scalar)
   # define a function that can id a root from the rootlist
   def id_root(zl,rlist):
       findgoal = (prec_goal*1.e-1) * np.ones(len(zl))
@@ -84,7 +83,7 @@ num_y=1000, colour_name='Greys'):
     # remove ticks and tick labels from the figure
   plt.tight_layout()
     # save a file of plot.
-  plt.savefig('newton-fractal-plot-'+func_string+'.jpg', dpi=200,bbox_inches='tight', pad_inches=0, transparent=True)
+  plt.savefig('newton-fractal-plot-'+func_string+'.jpg', dpi=200*scalar,bbox_inches='tight', pad_inches=0, transparent=True)
         
   plt.close()
 

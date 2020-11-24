@@ -50,44 +50,49 @@ def Box_Dim(image_name, debug=False, graph=False):
   # TODO:
   # calculate the maximim box_size for image
   # calculate a good step size for the range
-  n = [2**k for k in range(2, 9)] 
+  n = [2**k for k in range(1, 9)] 
   # computes a list of box counts given sizes in v
   # dummy variable n is the range of box_sizes, goes up by powers of 2
   box_number = [box_count(im_mat, nrows, ncols, v) for v in n]
-  x = np.array(n).reshape((-1, 1))
-  y = np.array(box_number)
+  #x = np.array(n)
+  #y = np.array(box_number)
   
-  modline = LinearRegression().fit(x, y)
+  #modline = np.polyfit(x, y, 1)
+  #pred_y = modline[0] * x + modline[1]
   
   if graph == True:
     # plot the graph (log-log)
     plt.figure(figsize=(6, 4))
     plt.loglog(n, box_number, '.-k', markersize=12)
-    plt.xlabel('$n$')
-    plt.ylabel('Box_count')
+    #plt.loglog(n, pred_y, color = 'green')
     plt.show
     # plot a reference line
-    res = input("Plot a reference line?(y/n) ")
+    res = input("Plot a reference line? (y/n) ")
     if res == ("y"):
-      done = False
-      while not done:
-        guess = input("What is the predicted slope? ")
-        vals = [100*v**(int(guess)) for v in n]
-        plt.loglog(n, vals, '--r')
-        repeat = input("Ready to compute?(y/n) ")
-        if repeat == 'y':
-          done = True
-          break
-    
+      guess = input("What is the predicted slope? ")
+      vals = [100*v**(float(guess)) for v in n]
+      plt.loglog(n, vals, '--r')
+      plt.xlabel('$n$')
+      plt.ylabel('Box_count')
+      plt.savefig('number_vs_count.pdf', bbox_inches='tight')
+      plt.show()
+      return guess
+    else:
+      plt.xlabel('$n$')
+      plt.ylabel('Box_count')
+      plt.savefig('number_vs_count.pdf', bbox_inches='tight')
+      plt.show()
+
+      return guess
     # plot decorations, save plot
     plt.xlabel('$n$')
     plt.ylabel('Box_count')
     plt.savefig('number_vs_count.pdf', bbox_inches='tight')
     plt.show()
 
-    return modline.coef_, guess
+    return guess
   
-  return modline.coef_
+  return
 
 
 def image_convert(image_name):
